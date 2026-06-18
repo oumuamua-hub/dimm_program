@@ -1,0 +1,8 @@
+＃例
+
+PYTHONPATH=src python3 -m dimm_analyzer.cli \
+  --input ../date/\
+  --config ./configs/vmc260l_imx432.yaml \
+  --output ./results/test_B \
+  --zenith-deg 10 \
+  --verbose

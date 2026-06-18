@@ -1,0 +1,110 @@
+input:
+  format: "ser"
+  expected_source: "SharpCap"
+  preferred_color_mode: "mono16"
+  reject_color_ser: true
+  allow_camera_roi_recording: true
+
+camera:
+  binning: 1
+  base_pixel_scale_arcsec_per_px: 0.643
+  pixel_scale_arcsec_per_px: null
+  pixel_scale_mode: "base_times_binning"
+  warn_if_binning_greater_than_1: true
+
+timing:
+  mode: "auto"
+  fps: null
+  allow_variable_fps: true
+  use_ser_timestamps_if_available: true
+  fallback_time_mode: "frame_index"
+
+instrument:
+  aperture_diameter_m: 0.045
+  baseline_m: 0.150
+  wavelength_m: 6.0e-7
+  zenith_deg: null
+  require_zenith_deg: true
+  zenith_correction: true
+
+spots:
+  expected_separation_px: 50
+  separation_tolerance_px: 25
+
+orientation:
+  mode: "auto_consistency"
+  mask_angle_deg: null
+  angle_grid_step_deg: 1.0
+  allow_pair_angle_as_fallback: true
+
+detection:
+  method: "DAOStarFinder"
+  threshold_sigma: 5.0
+  fwhm_guess_px: 5.0
+  max_sources: 10
+
+roi:
+  size_px: 25
+  fallback_size_px: 31
+  safety_margin_px: 5
+  auto_safety_check: true
+  auto_shrink_if_unsafe: false
+  min_allowed_size_px: 21
+  max_allowed_size_px: 41
+  safety_reference_percentile: 5
+  unsafe_fraction_threshold: 0.01
+  warning_fraction_threshold: 0.05
+
+gaussian_fit:
+  model: "elliptical_no_rotation"
+  fit_sigma_min_px: 0.6
+  fit_sigma_max_px: 8.0
+  fit_fwhm_min_px: 1.2
+  fit_fwhm_max_px: 18.0
+  max_iterations: 200
+  min_amplitude: 50
+  robust_loss: "linear"
+
+quality:
+  reject_saturated: true
+  saturation_level: null
+  saturation_margin: 100
+  min_flux: 1000
+  reject_spot_tracking: true
+  max_spot_tracking_distance_px: 15.0
+  reject_large_jump: true
+  max_center_jump_px: 10
+  reject_bad_fwhm: true
+  reject_fwhm_outlier: true
+  max_fwhm_relative_deviation: 0.5
+  fwhm_reference: "running_median"
+  fwhm_window_frames: 101
+  reject_bad_separation: true
+  reject_bad_relative_motion: true
+  max_relative_motion_deviation_px: 10.0
+  relative_motion_reference: "running_median"
+  relative_motion_window_frames: 101
+  saturation_core_radius_px: 2.0
+  saturation_core_min_pixels: 1
+  reject_saturated_core: true
+  classify_roi_saturated_pixel_as_hot_pixel: true
+
+calibration:
+  subtract_dark: false
+  dark_path: null
+  dark_method: "median"
+  max_dark_frames: 1000
+
+statistics:
+  block_mode: "time"
+  block_duration_sec: 6.0
+  block_size_frames: 3000
+  min_valid_frames_per_block: 500
+  min_valid_fraction_per_block: 0.6
+  representative_statistic: "median"
+
+output:
+  save_csv: true
+  save_json: true
+  save_plots: true
+  save_example_fit_images: true

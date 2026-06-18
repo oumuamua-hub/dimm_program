@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=64,<65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dimm-analyzer"
+version = "0.1.0"
+description = "SharpCap mono SER 動画用の DIMM 観測解析 CLI ツール。"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+  "astropy",
+  "photutils",
+  "pydantic",
+  "PyYAML",
+  "typer",
+  "rich",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+]
+
+[project.scripts]
+dimm-analyze = "dimm_analyzer.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["B008"]

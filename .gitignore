@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# observation data / generated outputs
+*.ser
+dimm_program_ver2/date/
+dimm_program_ver2/dimm_analyzer/results/
