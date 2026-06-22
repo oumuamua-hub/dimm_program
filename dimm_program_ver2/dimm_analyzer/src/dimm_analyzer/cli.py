@@ -11,6 +11,7 @@ import typer
 from rich.console import Console
 
 from . import _cli_support
+from ._compat import rebind_function_to_module
 from .config import apply_cli_overrides, config_warnings, load_config, validate_config
 from .exceptions import DimmAnalyzerError
 from .file_picker import (
@@ -36,17 +37,27 @@ from .report import (
 app = typer.Typer(add_completion=False, help="SharpCap mono SER の DIMM 観測を解析します。")
 console = Console()
 
+json = _cli_support.json
 OutputTarget = _cli_support.OutputTarget
-_batch_error_row = _cli_support._batch_error_row
-_batch_manifest_entry = _cli_support._batch_manifest_entry
-_batch_success_row = _cli_support._batch_success_row
-_comparison_row = _cli_support._comparison_row
-_next_available_output_path = _cli_support._next_available_output_path
-_resolve_batch_output_root = _cli_support._resolve_batch_output_root
-_resolve_collision = _cli_support._resolve_collision
-_resolve_output_target = _cli_support._resolve_output_target
-_safe_output_stem = _cli_support._safe_output_stem
-_ser_output_dirs = _cli_support._ser_output_dirs
+OutputTarget.__module__ = __name__
+_batch_error_row = rebind_function_to_module(_cli_support._batch_error_row, globals())
+_batch_manifest_entry = rebind_function_to_module(
+    _cli_support._batch_manifest_entry, globals()
+)
+_batch_success_row = rebind_function_to_module(_cli_support._batch_success_row, globals())
+_comparison_row = rebind_function_to_module(_cli_support._comparison_row, globals())
+_next_available_output_path = rebind_function_to_module(
+    _cli_support._next_available_output_path, globals()
+)
+_resolve_batch_output_root = rebind_function_to_module(
+    _cli_support._resolve_batch_output_root, globals()
+)
+_resolve_collision = rebind_function_to_module(_cli_support._resolve_collision, globals())
+_resolve_output_target = rebind_function_to_module(
+    _cli_support._resolve_output_target, globals()
+)
+_safe_output_stem = rebind_function_to_module(_cli_support._safe_output_stem, globals())
+_ser_output_dirs = rebind_function_to_module(_cli_support._ser_output_dirs, globals())
 
 
 @app.command()

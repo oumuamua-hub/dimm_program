@@ -9,6 +9,7 @@ from typing import Any, Dict, Iterable, Iterator, List, Optional, Sequence, Tupl
 import numpy as np
 
 from . import _diagnostics, _frame_processing, _summary
+from ._compat import rebind_function_to_module
 from .config import (
     AnalysisConfig,
     config_warnings,
@@ -48,50 +49,89 @@ from .roi_safety import (
 from .ser_reader import SERReader
 
 FrameInput = Tuple[int, np.ndarray, Optional[float]]
+
+# Rebound functions resolve globals here, preserving the pre-refactor monkeypatch targets.
+Counter = _diagnostics.Counter
+FitResult = _frame_processing.FitResult
+OrientationResult = _summary.OrientationResult
+extract_roi = _frame_processing.extract_roi
+fit_gaussian_2d = _frame_processing.fit_gaussian_2d
+frame_reject_reason_for_fit_fail = _frame_processing.frame_reject_reason_for_fit_fail
+math = _diagnostics.math
+model_to_dict = _summary.model_to_dict
+seeing_from_r0_arcsec = _summary.seeing_from_r0_arcsec
+zenith_correction_factor = _summary.zenith_correction_factor
+
 PreviousCenters = _frame_processing.PreviousCenters
 ProcessFrameReturn = _frame_processing.ProcessFrameReturn
-_assign_spot_ids = _frame_processing._assign_spot_ids
-_fit_source = _frame_processing._fit_source
-_large_center_jump = _frame_processing._large_center_jump
-_process_frame = _frame_processing._process_frame
+_assign_spot_ids = rebind_function_to_module(_frame_processing._assign_spot_ids, globals())
+_fit_source = rebind_function_to_module(_frame_processing._fit_source, globals())
+_large_center_jump = rebind_function_to_module(_frame_processing._large_center_jump, globals())
+_process_frame = rebind_function_to_module(_frame_processing._process_frame, globals())
 
 FRAME_DIAGNOSTIC_METRICS = _diagnostics.FRAME_DIAGNOSTIC_METRICS
 REJECT_REASON_ORDER = _diagnostics.REJECT_REASON_ORDER
-_distribution_row = _diagnostics._distribution_row
-_finite_or_nan = _diagnostics._finite_or_nan
-_frame_in_reliable_roi_population = _diagnostics._frame_in_reliable_roi_population
-_frame_metric_value = _diagnostics._frame_metric_value
-_frame_spot_position = _diagnostics._frame_spot_position
-_is_relative_outlier = _diagnostics._is_relative_outlier
-_none_if_nan = _diagnostics._none_if_nan
-_reference_series = _diagnostics._reference_series
-apply_fwhm_outlier_filter = _diagnostics.apply_fwhm_outlier_filter
-apply_relative_motion_filter = _diagnostics.apply_relative_motion_filter
-build_frame_distribution_rows = _diagnostics.build_frame_distribution_rows
-build_orientation_scan_rows = _diagnostics.build_orientation_scan_rows
-build_rejection_summary_rows = _diagnostics.build_rejection_summary_rows
-build_roi_safety_points_from_frame_results = (
-    _diagnostics.build_roi_safety_points_from_frame_results
+_distribution_row = rebind_function_to_module(_diagnostics._distribution_row, globals())
+_finite_or_nan = rebind_function_to_module(_diagnostics._finite_or_nan, globals())
+_frame_in_reliable_roi_population = rebind_function_to_module(
+    _diagnostics._frame_in_reliable_roi_population, globals()
 )
-build_spot_assignment_rows = _diagnostics.build_spot_assignment_rows
-reject_reason_counts = _diagnostics.reject_reason_counts
+_frame_metric_value = rebind_function_to_module(_diagnostics._frame_metric_value, globals())
+_frame_spot_position = rebind_function_to_module(_diagnostics._frame_spot_position, globals())
+_is_relative_outlier = rebind_function_to_module(_diagnostics._is_relative_outlier, globals())
+_none_if_nan = rebind_function_to_module(_diagnostics._none_if_nan, globals())
+_reference_series = rebind_function_to_module(_diagnostics._reference_series, globals())
+apply_fwhm_outlier_filter = rebind_function_to_module(
+    _diagnostics.apply_fwhm_outlier_filter, globals()
+)
+apply_relative_motion_filter = rebind_function_to_module(
+    _diagnostics.apply_relative_motion_filter, globals()
+)
+build_frame_distribution_rows = rebind_function_to_module(
+    _diagnostics.build_frame_distribution_rows, globals()
+)
+build_orientation_scan_rows = rebind_function_to_module(
+    _diagnostics.build_orientation_scan_rows, globals()
+)
+build_rejection_summary_rows = rebind_function_to_module(
+    _diagnostics.build_rejection_summary_rows, globals()
+)
+build_roi_safety_points_from_frame_results = rebind_function_to_module(
+    _diagnostics.build_roi_safety_points_from_frame_results, globals()
+)
+build_spot_assignment_rows = rebind_function_to_module(
+    _diagnostics.build_spot_assignment_rows, globals()
+)
+reject_reason_counts = rebind_function_to_module(
+    _diagnostics.reject_reason_counts, globals()
+)
 
-_array_stat = _summary._array_stat
-_estimated_fps = _summary._estimated_fps
-_is_finite_number = _summary._is_finite_number
-_nanmean = _summary._nanmean
-_nanmedian = _summary._nanmedian
-_nanstd = _summary._nanstd
-_optional_close = _summary._optional_close
-_orientation_mismatch_score = _summary._orientation_mismatch_score
-_representative_block_values = _summary._representative_block_values
-_result_reliability = _summary._result_reliability
-_sanity_check_from_r0 = _summary._sanity_check_from_r0
-_saturation_summary = _summary._saturation_summary
-_valid_blocks_with_finite_seeing = _summary._valid_blocks_with_finite_seeing
-_valid_rejected_medians = _summary._valid_rejected_medians
-build_summary = _summary.build_summary
-validate_result_consistency = _summary.validate_result_consistency
+_array_stat = rebind_function_to_module(_summary._array_stat, globals())
+_estimated_fps = rebind_function_to_module(_summary._estimated_fps, globals())
+_is_finite_number = rebind_function_to_module(_summary._is_finite_number, globals())
+_nanmean = rebind_function_to_module(_summary._nanmean, globals())
+_nanmedian = rebind_function_to_module(_summary._nanmedian, globals())
+_nanstd = rebind_function_to_module(_summary._nanstd, globals())
+_optional_close = rebind_function_to_module(_summary._optional_close, globals())
+_orientation_mismatch_score = rebind_function_to_module(
+    _summary._orientation_mismatch_score, globals()
+)
+_representative_block_values = rebind_function_to_module(
+    _summary._representative_block_values, globals()
+)
+_result_reliability = rebind_function_to_module(_summary._result_reliability, globals())
+_sanity_check_from_r0 = rebind_function_to_module(_summary._sanity_check_from_r0, globals())
+_saturation_summary = rebind_function_to_module(_summary._saturation_summary, globals())
+_valid_blocks_with_finite_seeing = rebind_function_to_module(
+    _summary._valid_blocks_with_finite_seeing, globals()
+)
+_valid_rejected_medians = rebind_function_to_module(
+    _summary._valid_rejected_medians, globals()
+)
+build_summary = rebind_function_to_module(_summary.build_summary, globals())
+validate_result_consistency = rebind_function_to_module(
+    _summary.validate_result_consistency, globals()
+)
 
 
 def analyze_ser(
