@@ -6,7 +6,7 @@ input:
   allow_camera_roi_recording: true
 
 camera:
-  binning: 1
+  binning: 2
   base_pixel_scale_arcsec_per_px: 0.643
   pixel_scale_arcsec_per_px: null
   pixel_scale_mode: "base_times_binning"

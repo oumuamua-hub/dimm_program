@@ -1,8 +1,313 @@
 ＃例
 
 PYTHONPATH=src python3 -m dimm_analyzer.cli \
-  --input ../date/\
+  --input ../date/02_43_08.ser\
   --config ./configs/vmc260l_imx432.yaml \
-  --output ./results/test_B \
+  --output ./results/test_a \
   --zenith-deg 10 \
   --verbose
+
+
+＃git comand
+
+git status
+git add .
+git commit -m "変更内容を短く書く"
+git push
+
+# GitHubの基本運用メモ
+
+GitHubは、コードのバックアップ場所・変更履歴の管理場所・友達と共有する場所として使う。
+
+普段の基本操作はこれ。
+
+git status
+git add .
+git commit -m "変更内容を短く書く"
+git push
+
+それぞれの意味：
+
+git status
+→ 今どのファイルが変更されているか確認する。
+
+git add .
+→ 変更したファイルをコミット候補に入れる。
+
+git commit -m "変更内容"
+→ ローカルPC内のGitに変更履歴として保存する。
+
+git push
+→ GitHubにアップロードする。
+
+
+# 作業前にやること
+
+友達やCodexも触る可能性があるなら、作業前に最新版を取り込む。
+
+git pull
+
+おすすめの流れ：
+
+git pull
+# 作業する
+git status
+git add .
+git commit -m "変更内容"
+git push
+
+
+# いつコミットするか
+
+機能が一区切りついたらコミットする。
+
+例：
+
+- SERフォルダ入力が動いた
+- ROI safetyを修正した
+- 飽和判定を改善した
+- READMEを更新した
+- バグを1つ直した
+- テストが通った
+
+何日もまとめて1回だけコミットするのは危険。
+途中で壊れたときに戻りにくい。
+
+
+# コミットメッセージの例
+
+英語でも日本語でもOK。
+短く具体的に書く。
+
+例：
+
+git commit -m "Fix saturation diagnostics"
+
+git commit -m "Add SharpCap folder input"
+
+git commit -m "Update README for batch analysis"
+
+git commit -m "Fix ROI safety summary"
+
+日本語なら：
+
+git commit -m "飽和判定を修正"
+
+git commit -m "SharpCapフォルダ入力に対応"
+
+git commit -m "READMEを更新"
+
+git commit -m "ROI safetyを修正"
+
+
+# GitHubに入れるもの
+
+GitHubに入れるべきもの：
+
+- Pythonのソースコード
+- YAML設定ファイル
+- README.md
+- tests/
+- pyproject.toml
+- .gitignore
+
+GitHubに入れない方がいいもの：
+
+- .ser 動画ファイル
+- date/ 観測データフォルダ
+- results/ 解析結果フォルダ
+- .venv/
+- .DS_Store
+- __pycache__/
+- .pytest_cache/
+- .ruff_cache/
+
+SER動画や解析結果は重いのでGitHubに上げない。
+
+
+# .gitignore の役割
+
+.gitignore は、Gitに入れたくないファイルを指定する設定ファイル。
+
+例：
+
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# observation data / generated outputs
+*.ser
+dimm_program_ver2/date/
+dimm_program_ver2/dimm_analyzer/results/
+
+これを書いておくと、git add . してもSERやresultsがGitに入らない。
+
+
+# 新しいSERを解析したとき
+
+例えば、
+
+date/00_50_20.ser
+results/00_50_20/
+
+ができても、これは基本GitHubに入れない。
+
+観測データや解析結果ではなく、解析プログラムを改良したときだけコミットする。
+
+
+# Codexに修正させた後の流れ
+
+Codexが修正したら、すぐpushせずに確認する。
+
+まず：
+
+git status
+
+次にテスト：
+
+cd /Users/nakajima/astrokit/dimm_program/dimm_program_ver2/dimm_analyzer
+python3 -m pytest
+python3 -m ruff check .
+
+問題なければ、親フォルダに戻る。
+
+cd /Users/nakajima/astrokit/dimm_program
+
+そして：
+
+git add .
+git commit -m "変更内容"
+git push
+
+
+# DIMM解析プログラムでのおすすめ運用
+
+普段のコード修正時：
+
+cd /Users/nakajima/astrokit/dimm_program
+
+git pull
+
+# コードを修正する
+
+cd dimm_program_ver2/dimm_analyzer
+python3 -m pytest
+python3 -m ruff check .
+
+cd /Users/nakajima/astrokit/dimm_program
+
+git status
+git add .
+git commit -m "変更内容"
+git push
+
+
+# 観測データを解析するだけの日
+
+Git操作は基本不要。
+
+SERやresultsはGitHubに上げないため。
+
+
+# プログラムを改良した日
+
+必ずコミットしてpushする。
+
+流れ：
+
+git status
+git add .
+git commit -m "変更内容"
+git push
+
+
+# 壊れたときに戻す方法
+
+まず変更内容を確認する。
+
+git status
+
+特定のファイルだけ元に戻す場合：
+
+git restore ファイル名
+
+例：
+
+git restore dimm_program_ver2/dimm_analyzer/src/dimm_analyzer/pipeline.py
+
+全部の未コミット変更を戻す場合：
+
+git restore .
+
+ただし git restore . は今の作業内容が消えるので注意。
+実行前に必ず git status で確認する。
+
+
+# 友達と共同編集するとき
+
+共同編集時は、作業前に必ず pull する。
+
+git pull
+
+そのあと作業して、
+
+git add .
+git commit -m "変更内容"
+git push
+
+友達が先にpushしていた場合、自分がpushする前に git pull が必要になる。
+
+
+# ブランチについて
+
+最初は main だけでOK。
+
+ただし、大きな変更をするときはブランチを使うと安全。
+
+例：
+
+git switch -c improve-roi-safety
+
+作業してコミットしたら：
+
+git push -u origin improve-roi-safety
+
+その後GitHub上でPull Requestを作る。
+
+ただし、今は無理にブランチを使わなくてOK。
+まずは main で基本操作に慣れる。
+
+
+# 最低限覚えるコマンド
+
+git status
+git add .
+git commit -m "変更内容"
+git push
+
+作業前に最新版を取るなら：
+
+git pull
+
+
+# 今の状態
+
+ローカルで初回コミット済み。
+GitHubにも push 済み。
+
+GitHubリポジトリ：
+
+https://github.com/oumuamua-hub/dimm_program.git
+
+今後は変更したら、
+
+git status
+git add .
+git commit -m "変更内容"
+git push
+
+でGitHubに反映できる。
