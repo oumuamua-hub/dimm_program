@@ -245,6 +245,7 @@ def summarize_roi_safety(
         safety_margin_px,
         max_allowed_size_px,
     )
+    # Use robust p05 for recommendations so one edge outlier does not collapse the ROI size.
     recommended = recommended_from_p05
 
     below_half_count = int(np.sum(stats_values < half_roi_px))

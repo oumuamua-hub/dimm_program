@@ -281,6 +281,8 @@ def _saturation_failure_reason(
 ) -> Optional[str]:
     if saturation_level is None:
         return None
+    # A saturated core invalidates the stellar profile.
+    # Isolated ROI pixels remain a separate diagnostic class.
     if (
         quality_config.reject_saturated
         and quality_config.reject_saturated_core
