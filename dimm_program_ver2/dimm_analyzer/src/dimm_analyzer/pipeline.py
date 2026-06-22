@@ -382,6 +382,7 @@ def analyze_frame_sequence(
         config=config,
         pixel_scale_arcsec_per_px=pixel_scale,
     )
+    # Orientation uses only frames that survived every frame-level quality filter above.
     orientation = estimate_orientation(
         mode=config.orientation.mode,
         dx=valid_dx,
